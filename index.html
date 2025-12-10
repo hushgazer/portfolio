@@ -5,57 +5,57 @@
     <title>gta5modsmarket</title>
     <style>
         body {
-            background: #111;
-            color: white;
+            background: #0b0b0f;
+            color: #ffffff;
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: auto;
             padding: 40px;
         }
 
-        a { color: inherit; }
+        /* HEADER */
 
         header {
-            text-align: center;
-            margin-bottom: 30px;
+            background: #ff4b5c; /* red from logo */
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.55);
         }
 
-        .logo {
-            font-size: 32px;
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .logo-img {
+            height: 70px;
+            width: 70px;
+            border-radius: 18px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 12px rgba(0,0,0,0.5);
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 30px;
             font-weight: bold;
             letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            font-size: 16px;
-        }
-
-        nav a {
-            text-decoration: none;
-            opacity: 0.8;
-        }
-
-        nav a:hover {
-            opacity: 1;
         }
 
         h1 {
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 30px;
+            margin-bottom: 10px;
         }
 
         p {
-            opacity: 0.8;
-            margin-bottom: 20px;
+            opacity: 0.85;
+            margin-bottom: 22px;
         }
 
-        .section {
-            margin-bottom: 40px;
-        }
+        /* GRID */
 
         .grid {
             display: flex;
@@ -65,30 +65,23 @@
 
         .item {
             width: 280px;
-            background: #222;
+            background: #171821;
             padding: 12px;
-            border-radius: 12px;
+            border-radius: 16px;
+            border: 2px solid #1f6bff; /* blue from logo */
             text-align: center;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            transition: 0.16s ease;
         }
 
         .item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-            background: #252525;
-        }
-
-        .tag {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            margin-bottom: 6px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.7);
+            border-color: #ffcc4d; /* yellow accent */
         }
 
         .image-wrapper {
             position: relative;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
         }
 
@@ -97,11 +90,13 @@
             display: block;
         }
 
+        /* HOVER OVERLAY */
+
         .overlay {
             position: absolute;
             inset: 0;
             background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -126,16 +121,16 @@
 
         .overlay-text {
             font-size: 13px;
-            opacity: 0.85;
+            opacity: 0.9;
             margin-bottom: 10px;
         }
 
         .overlay-btn {
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 999px;
-            border: none;
-            background: #5865F2;
-            color: white;
+            border: 1px solid #ffffff;
+            background: #5865F2; /* discord-ish */
+            color: #ffffff;
             font-size: 13px;
             cursor: pointer;
         }
@@ -148,61 +143,45 @@
             margin-top: 10px;
             font-size: 15px;
         }
-
-        .discord-note {
-            font-size: 14px;
-            opacity: 0.8;
-        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">gta5modsmarket</div>
-    <nav>
-        <a href="#inventory">Inventory / Shop</a>
-        <a href="#portfolio">Portfolio</a>
-    </nav>
+    <div class="header-inner">
+        <img src="assets/logo.png" alt="logo" class="logo-img">
+        <div class="logo-text">gta5modsmarket</div>
+    </div>
 </header>
 
-<section id="inventory" class="section">
-    <h1>Inventory / Shop</h1>
-    <p>Browse all available GTA V mods. Click a mod and join my Discord to download or request custom edits.</p>
-    <div class="grid" id="gallery"></div>
-</section>
+<h1>Inventory / Shop</h1>
+<p>Browse all available GTA V mods. Hover a mod to join Discord and download.</p>
 
-<section id="portfolio" class="section">
-    <h1>Portfolio</h1>
-    <p class="discord-note">
-        Selected showcase work and past projects. For commissions or questions, contact me through Discord.
-    </p>
-</section>
+<div class="grid" id="gallery"></div>
 
 <script>
-    // put your real Discord invite here:
-    const DISCORD_LINK = "https://discord.gg/your-server-code-here";
+    const DISCORD_LINK = "https://discord.gg/vTjXFNp82S";
 
     fetch('images/images.json')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(images => {
             const gallery = document.getElementById('gallery');
 
             images.forEach(img => {
                 const name = img
-                    .replace(/\.[^/.]+$/, '')   // remove extension
-                    .replace(/_/g, ' ');        // underscores -> spaces
+                    .replace(/\.[^/.]+$/, '')
+                    .replace(/_/g, ' ');
 
                 const item = document.createElement('div');
                 item.className = 'item';
                 item.innerHTML = `
-                    <div class="tag">mod</div>
                     <div class="image-wrapper">
                         <img src="images/${img}" alt="${name}">
                         <div class="overlay">
                             <div class="overlay-content">
                                 <div class="overlay-title">Join Discord to download</div>
                                 <div class="overlay-text">
-                                    Get this mod and future updates directly in my Discord server.
+                                    Get this mod and future updates directly in my server.
                                 </div>
                                 <button class="overlay-btn">Join Discord</button>
                             </div>
@@ -211,18 +190,13 @@
                     <div class="name">${name}</div>
                 `;
 
-                const button = item.querySelector('.overlay-btn');
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    window.open(DISCORD_LINK, '_blank');
-                });
+                item.querySelector(".overlay-btn")
+                    .addEventListener("click", () => window.open(DISCORD_LINK, "_blank"));
 
                 gallery.appendChild(item);
             });
         })
-        .catch(err => {
-            console.error('Error loading images.json', err);
-        });
+        .catch(err => console.error('Error loading images.json', err));
 </script>
 
 </body>
