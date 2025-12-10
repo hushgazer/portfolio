@@ -2,12 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>gta5modsmarket</title>
+    <title>GTA5 MODS MARKET</title>
     <style>
-        /* BASE */
-
         body {
-            background: #050816; /* midnight blue */
+            background: #050816;
             color: #ffffff;
             font-family: Arial, sans-serif;
             max-width: 1200px;
@@ -16,8 +14,6 @@
         }
 
         a { color: inherit; text-decoration: none; }
-
-        /* LOGO / TITLE (no red) */
 
         header {
             margin-bottom: 10px;
@@ -51,8 +47,6 @@
             letter-spacing: 1px;
         }
 
-        /* SEPARATE NAV BAR WITH RED BG */
-
         .nav-bar {
             background: #ff4b5c;
             border-radius: 999px;
@@ -69,6 +63,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             opacity: 0.9;
+            font-weight: bold;
         }
 
         .nav-link:hover {
@@ -81,16 +76,9 @@
             color: #ffffff;
         }
 
-        /* SECTIONS */
-
         h1 {
             font-size: 26px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            opacity: 0.85;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .section-box {
@@ -101,14 +89,6 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.45);
             margin-bottom: 26px;
         }
-
-        .section-header {
-            margin-bottom: 10px;
-            border-bottom: 1px solid #151b2c;
-            padding-bottom: 10px;
-        }
-
-        /* INVENTORY GRID */
 
         .grid {
             display: flex;
@@ -142,8 +122,6 @@
             width: 100%;
             display: block;
         }
-
-        /* HOVER OVERLAY */
 
         .overlay {
             position: absolute;
@@ -196,13 +174,6 @@
             margin-top: 10px;
             font-size: 15px;
         }
-
-        /* PORTFOLIO PLACEHOLDER */
-
-        .coming-soon {
-            font-size: 14px;
-            opacity: 0.8;
-        }
     </style>
 </head>
 <body>
@@ -211,38 +182,21 @@
     <div class="header-inner">
         <div class="header-top">
             <img src="assets/logo.png" alt="logo" class="logo-img">
-            <div class="logo-text">gta5modsmarket</div>
+            <div class="logo-text">GTA5 MODS MARKET</div>
         </div>
 
-        <!-- separate nav bar -->
         <div class="nav-bar">
-            <a href="#inventory" class="nav-link">INVENTORY / SHOP</a>
+            <a href="index.html" class="nav-link">INVENTORY / SHOP</a>
             <span class="nav-sep">|</span>
-            <a href="#portfolio" class="nav-link">PORTFOLIO</a>
+            <a href="portfolio.html" class="nav-link">PORTFOLIO</a>
         </div>
     </div>
 </header>
 
-<!-- INVENTORY SECTION -->
-
-<section id="inventory" class="section-box">
-    <div class="section-header">
-        <h1>Inventory / Shop</h1>
-    </div>
+<section class="section-box">
+    <h1>Inventory / Shop</h1>
 
     <div class="grid" id="gallery"></div>
-</section>
-
-<!-- PORTFOLIO SECTION (EMPTY FOR NOW) -->
-
-<section id="portfolio" class="section-box">
-    <div class="section-header">
-        <h1>Portfolio</h1>
-    </div>
-    <p class="coming-soon">
-        Portfolio section coming soon. This area will showcase selected projects, custom builds,
-        and before / after shots separate from the main inventory.
-    </p>
 </section>
 
 <script>
