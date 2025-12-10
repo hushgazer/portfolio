@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>GTA5 MODS MARKET</title>
+
     <style>
         body {
             background: #050816;
@@ -14,8 +15,6 @@
         }
 
         a { color: inherit; text-decoration: none; }
-
-        header { margin-bottom: 10px; }
 
         .header-inner {
             display: flex;
@@ -65,12 +64,6 @@
         }
 
         .nav-link:hover { opacity: 1; }
-
-        .nav-sep {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-        }
 
         h1 {
             font-size: 26px;
@@ -168,6 +161,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <header>
@@ -179,7 +173,7 @@
 
         <div class="nav-bar">
             <a href="index.html" class="nav-link">INVENTORY / SHOP</a>
-            <span class="nav-sep">|</span>
+            <span>|</span>
             <a href="portfolio.html" class="nav-link">PORTFOLIO</a>
         </div>
     </div>
@@ -193,21 +187,23 @@
 <script>
     const DISCORD_LINK = "https://discord.gg/vTjXFNp82S";
 
+    // matches your workflow output: ["img1.png","img2.webp",...]
     fetch('images_inv/images.json')
         .then(res => res.json())
-        .then(mods => {
+        .then(images => {
             const gallery = document.getElementById('gallery');
 
-            mods.forEach(mod => {
-                const name = mod.name;
-                const filename = mod.filename;
+            images.forEach(img => {
+                const name = img
+                    .replace(/\.[^/.]+$/, '')
+                    .replace(/_/g, ' ');
 
-                const item = document.createElement('div');
-                item.className = 'item';
+                const card = document.createElement('div');
+                card.className = 'item';
 
-                item.innerHTML = `
+                card.innerHTML = `
                     <div class="image-wrapper">
-                        <img src="images_inv/${filename}" alt="${name}">
+                        <img src="images_inv/${img}" alt="${name}">
                         <div class="overlay">
                             <div class="overlay-content">
                                 <div class="overlay-title">Join Discord to download</div>
@@ -219,13 +215,13 @@
                     <div class="name">${name}</div>
                 `;
 
-                item.querySelector(".overlay-btn")
-                    .addEventListener("click", () => window.open(DISCORD_LINK, "_blank"));
+                card.querySelector('.overlay-btn')
+                    .addEventListener('click', () => window.open(DISCORD_LINK, '_blank'));
 
-                gallery.appendChild(item);
+                gallery.appendChild(card);
             });
         })
-        .catch(err => console.error("Error loading inventory:", err));
+        .catch(err => console.error("JSON load error:", err));
 </script>
 
 </body>
