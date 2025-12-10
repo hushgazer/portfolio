@@ -15,9 +15,7 @@
 
         a { color: inherit; text-decoration: none; }
 
-        header {
-            margin-bottom: 10px;
-        }
+        header { margin-bottom: 10px; }
 
         .header-inner {
             display: flex;
@@ -66,9 +64,7 @@
             font-weight: bold;
         }
 
-        .nav-link:hover {
-            opacity: 1;
-        }
+        .nav-link:hover { opacity: 1; }
 
         .nav-sep {
             font-size: 20px;
@@ -135,9 +131,7 @@
             transition: opacity 0.18s ease;
         }
 
-        .image-wrapper:hover .overlay {
-            opacity: 1;
-        }
+        .image-wrapper:hover .overlay { opacity: 1; }
 
         .overlay-content {
             text-align: center;
@@ -166,9 +160,7 @@
             cursor: pointer;
         }
 
-        .overlay-btn:hover {
-            filter: brightness(1.08);
-        }
+        .overlay-btn:hover { filter: brightness(1.08); }
 
         .name {
             margin-top: 10px;
@@ -195,35 +187,31 @@
 
 <section class="section-box">
     <h1>Inventory / Shop</h1>
-
     <div class="grid" id="gallery"></div>
 </section>
 
 <script>
     const DISCORD_LINK = "https://discord.gg/vTjXFNp82S";
 
-    // 1. Corrected JSON fetch path
     fetch('images_inv/images.json')
         .then(res => res.json())
-        .then(images => {
+        .then(mods => {
             const gallery = document.getElementById('gallery');
 
-            images.forEach(img => {
-                const name = img
-                    .replace(/\.[^/.]+$/, '')
-                    .replace(/_/g, ' ');
+            mods.forEach(mod => {
+                const name = mod.name;
+                const filename = mod.filename;
 
                 const item = document.createElement('div');
                 item.className = 'item';
+
                 item.innerHTML = `
                     <div class="image-wrapper">
-                        <img src="images_inv/${img}" alt="${name}">
+                        <img src="images_inv/${filename}" alt="${name}">
                         <div class="overlay">
                             <div class="overlay-content">
                                 <div class="overlay-title">Join Discord to download</div>
-                                <div class="overlay-text">
-                                    Get this mod and future updates directly in my server.
-                                </div>
+                                <div class="overlay-text">Get this mod and future updates directly in my server.</div>
                                 <button class="overlay-btn">Join Discord</button>
                             </div>
                         </div>
@@ -237,7 +225,7 @@
                 gallery.appendChild(item);
             });
         })
-        .catch(err => console.error('Error loading images.json', err));
+        .catch(err => console.error("Error loading inventory:", err));
 </script>
 
 </body>
