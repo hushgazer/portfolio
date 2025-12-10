@@ -3,7 +3,7 @@ name: Generate images.json
 on:
   push:
     paths:
-      - "images/**"
+      - "images_inv/**"
 
 jobs:
   build:
@@ -15,33 +15,35 @@ jobs:
 
       - name: Generate images.json
         run: |
-          mkdir -p images
-          echo '[' > images/images.json
+          mkdir -p images_inv
+          echo '[' > images_inv/images.json
           first=true
-          for file in images/*; do
+          for file in images_inv/*; do
             base=$(basename "$file")
-            if [[ "$base" == ".gitkeep" ]]; then
+            if [[ "$base" == ".gitkeep" || "$base" == "images.json" ]]; then
               continue
             fi
             case "$base" in
               *.jpg|*.jpeg|*.png|*.webp)
+                clean_name="${base%.*}"
+                clean_name="${clean_name//_/ }"
                 if [ "$first" = false ]; then
-                  echo ',' >> images/images.json
+                  echo ',' >> images_inv/images.json
                 fi
-                printf '  "%s"' "$base" >> images/images.json
+                printf '  { "name": "%s", "filename": "%s" }' "$clean_name" "$base" >> images_inv/images.json
                 first=false
                 ;;
             esac
           done
-          echo '' >> images/images.json
-          echo ']' >> images/images.json
+          echo '' >> images_inv/images.json
+          echo ']' >> images_inv/images.json
 
       - name: Commit images.json
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add images/images.json
+            git add images_inv/images.json
             git commit -m "Update images.json"
             git push
           fi
