@@ -1,61 +1,170 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My GTA5 Mods Portfolio</title>
+    <meta charset="UTF-8">
+    <title>gta5modsmarket</title>
     <style>
         body {
-            background:#111;
-            color:white;
-            font-family:Arial;
-            max-width:1200px;
-            margin:auto;
-            padding:40px;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px;
         }
-        h1 { font-size:40px; margin-bottom:20px; }
+
+        a { color: inherit; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+            font-size: 16px;
+        }
+
+        nav a {
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
         .grid {
-            display:flex;
-            flex-wrap:wrap;
-            gap:20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
+
         .item {
-            width:300px;
-            background:#222;
-            padding:10px;
-            border-radius:8px;
-            text-align:center;
+            width: 280px;
+            background: #222;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
         }
+
+        .item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+            background: #252525;
+        }
+
         .item img {
-            width:100%;
-            border-radius:6px;
+            width: 100%;
+            border-radius: 8px;
         }
+
         .name {
-            margin-top:10px;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+        .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 4px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .discord-note {
+            font-size: 14px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-<h1>My GTA5 Mod Portfolio</h1>
+<header>
+    <div class="logo">gta5modsmarket</div>
+    <nav>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#inventory">Inventory / Shop</a>
+    </nav>
+</header>
 
-<div class="grid" id="gallery"></div>
+<section id="portfolio" class="section">
+    <h1>Portfolio</h1>
+    <p>Showcase of my GTA V mod work. All items below are digital mods only.</p>
+    <div class="grid" id="gallery"></div>
+</section>
+
+<section id="inventory" class="section">
+    <h1>Inventory / Shop</h1>
+    <p class="discord-note">
+        To purchase a mod or request a custom one, select any item above and follow the Discord instructions,
+        or contact me directly via Discord from my link.
+    </p>
+</section>
 
 <script>
-fetch('images/images.json')
-  .then(response => response.json())
-  .then(images => {
-    const gallery = document.getElementById('gallery');
+    // replace this with your actual Discord invite when you’re ready:
+    const DISCORD_LINK = "https://discord.gg/your-server-code-here";
 
-    images.forEach(img => {
-      const name = img.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+    fetch('images/images.json')
+        .then(response => response.json())
+        .then(images => {
+            const gallery = document.getElementById('gallery');
 
-      gallery.innerHTML += `
-        <div class="item">
-          <img src="images/${img}" />
-          <div class="name">${name}</div>
-        </div>
-      `;
-    });
-  });
+            images.forEach(img => {
+                const name = img
+                    .replace(/\.[^/.]+$/, '')   // remove extension
+                    .replace(/_/g, ' ');        // underscores -> spaces
+
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <div class="tag">mod</div>
+                    <img src="images/${img}" alt="${name}">
+                    <div class="name">${name}</div>
+                `;
+
+                item.onclick = () => {
+                    const confirmJoin = confirm(
+                        name.toUpperCase() +
+                        "\n\nTo buy this mod or request a custom edit, join my Discord server.\n\nOpen Discord link now?"
+                    );
+                    if (confirmJoin) {
+                        window.open(DISCORD_LINK, '_blank');
+                    }
+                };
+
+                gallery.appendChild(item);
+            });
+        })
+        .catch(err => {
+            console.error('Error loading images.json', err);
+        });
 </script>
 
 </body>
