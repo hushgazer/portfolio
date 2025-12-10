@@ -16,20 +16,20 @@
         a { color: inherit; }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
             margin-bottom: 30px;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             letter-spacing: 1px;
+            margin-bottom: 10px;
         }
 
         nav {
             display: flex;
+            justify-content: center;
             gap: 24px;
             font-size: 16px;
         }
@@ -45,12 +45,16 @@
 
         h1 {
             font-size: 32px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         p {
             opacity: 0.8;
             margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
         }
 
         .grid {
@@ -62,10 +66,9 @@
         .item {
             width: 280px;
             background: #222;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 12px;
             text-align: center;
-            cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
         }
 
@@ -75,26 +78,75 @@
             background: #252525;
         }
 
+        .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 6px;
+        }
+
+        .image-wrapper {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
         .item img {
             width: 100%;
-            border-radius: 8px;
+            display: block;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.18s ease;
+        }
+
+        .image-wrapper:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay-content {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .overlay-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .overlay-text {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-bottom: 10px;
+        }
+
+        .overlay-btn {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            background: #5865F2;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .overlay-btn:hover {
+            filter: brightness(1.08);
         }
 
         .name {
             margin-top: 10px;
             font-size: 15px;
-        }
-
-        .tag {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.6;
-            margin-bottom: 4px;
-        }
-
-        .section {
-            margin-bottom: 40px;
         }
 
         .discord-note {
@@ -108,27 +160,26 @@
 <header>
     <div class="logo">gta5modsmarket</div>
     <nav>
-        <a href="#portfolio">Portfolio</a>
         <a href="#inventory">Inventory / Shop</a>
+        <a href="#portfolio">Portfolio</a>
     </nav>
 </header>
 
-<section id="portfolio" class="section">
-    <h1>Portfolio</h1>
-    <p>Showcase of my GTA V mod work. All items below are digital mods only.</p>
+<section id="inventory" class="section">
+    <h1>Inventory / Shop</h1>
+    <p>Browse all available GTA V mods. Click a mod and join my Discord to download or request custom edits.</p>
     <div class="grid" id="gallery"></div>
 </section>
 
-<section id="inventory" class="section">
-    <h1>Inventory / Shop</h1>
+<section id="portfolio" class="section">
+    <h1>Portfolio</h1>
     <p class="discord-note">
-        To purchase a mod or request a custom one, select any item above and follow the Discord instructions,
-        or contact me directly via Discord from my link.
+        Selected showcase work and past projects. For commissions or questions, contact me through Discord.
     </p>
 </section>
 
 <script>
-    // replace this with your actual Discord invite when you’re ready:
+    // put your real Discord invite here:
     const DISCORD_LINK = "https://discord.gg/your-server-code-here";
 
     fetch('images/images.json')
@@ -145,19 +196,26 @@
                 item.className = 'item';
                 item.innerHTML = `
                     <div class="tag">mod</div>
-                    <img src="images/${img}" alt="${name}">
+                    <div class="image-wrapper">
+                        <img src="images/${img}" alt="${name}">
+                        <div class="overlay">
+                            <div class="overlay-content">
+                                <div class="overlay-title">Join Discord to download</div>
+                                <div class="overlay-text">
+                                    Get this mod and future updates directly in my Discord server.
+                                </div>
+                                <button class="overlay-btn">Join Discord</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="name">${name}</div>
                 `;
 
-                item.onclick = () => {
-                    const confirmJoin = confirm(
-                        name.toUpperCase() +
-                        "\n\nTo buy this mod or request a custom edit, join my Discord server.\n\nOpen Discord link now?"
-                    );
-                    if (confirmJoin) {
-                        window.open(DISCORD_LINK, '_blank');
-                    }
-                };
+                const button = item.querySelector('.overlay-btn');
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.open(DISCORD_LINK, '_blank');
+                });
 
                 gallery.appendChild(item);
             });
