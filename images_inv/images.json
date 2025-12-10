@@ -1,47 +1,27 @@
-name: Generate images.json
-
-on:
-  push:
-    paths:
-      - "images_inv/**"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Generate images.json
-        run: |
-          mkdir -p images_inv
-          echo '[' > images_inv/images.json
-          first=true
-          for file in images_inv/*; do
-            base=$(basename "$file")
-            if [[ "$base" == ".gitkeep" || "$base" == "images.json" ]]; then
-              continue
-            fi
-            case "$base" in
-              *.jpg|*.jpeg|*.png|*.webp)
-                if [ "$first" = false ]; then
-                  echo ',' >> images_inv/images.json
-                fi
-                printf '  "%s"' "$base" >> images_inv/images.json
-                first=false
-                ;;
-            esac
-          done
-          echo '' >> images_inv/images.json
-          echo ']' >> images_inv/images.json
-
-      - name: Commit images.json
-        run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add images_inv/images.json
-            git commit -m "Update images.json"
-            git push
-          fi
+[
+  { "name": "Baby Spiderman was Murdered", "filename": "Baby_Spiderman_was_Murdered.png" },
+  { "name": "Baby sonic fat to buff", "filename": "Baby_sonic_fat_to_buff.png" },
+  { "name": "Buff Spider sonic", "filename": "Buff_Spider_sonic.png" },
+  { "name": "Fire and Electrical Mario Statue", "filename": "Fire_and_Electrical_Mario_Statue.png" },
+  { "name": "Flash to Diamond FLash", "filename": "Flash_to_Diamond_FLash.png" },
+  { "name": "Gold Metal Sonic Mods", "filename": "Gold_Metal_Sonic_Mods.jpg" },
+  { "name": "Human to Warewolf", "filename": "Human_to_Warewolf.jpg" },
+  { "name": "Joining Dragon School", "filename": "Joining_Dragon_School.png" },
+  { "name": "Strongest Baby Ever", "filename": "Strongest_Baby_Ever.png" },
+  { "name": "Upgradding into Ninja Knuckles", "filename": "Upgradding_into_Ninja_Knuckles.png" },
+  { "name": "Upgrading Sonic to Mario Sonic", "filename": "Upgrading_Sonic_to_Mario_Sonic.png" },
+  { "name": "angel sonic and lady eggman and eggman", "filename": "angel_sonic_and_lady_eggman_and_eggman.jpg" },
+  { "name": "animal cars", "filename": "animal_cars.jpg" },
+  { "name": "baby Sonic characters", "filename": "baby_Sonic_characters.png" },
+  { "name": "baby sonic coffin ", "filename": "baby_sonic_coffin_.png" },
+  { "name": "dragons mod", "filename": "dragons_mod.jpg" },
+  { "name": "evil sonic and friends pack", "filename": "evil_sonic_and_friends_pack.png" },
+  { "name": "flash skeleton dino mods", "filename": "flash skeleton dino mods.jpg" },
+  { "name": "flash skeleton dino", "filename": "flash_skeleton_dino.jpg" },
+  { "name": "god knuckles", "filename": "god_knuckles.png" },
+  { "name": "sonic exe", "filename": "sonic_exe.png" },
+  { "name": "sonic spider and simba mods", "filename": "sonic_spider_and_simba_mods.jpg" },
+  { "name": "tallest bikes", "filename": "tallest_bikes.png" },
+  { "name": "upgrading flash bikes", "filename": "upgrading_flash_bikes.jpg" },
+  { "name": "venom cars", "filename": "venom_cars.jpg" }
+]
