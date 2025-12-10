@@ -202,7 +202,8 @@
 <script>
     const DISCORD_LINK = "https://discord.gg/vTjXFNp82S";
 
-    fetch('images/images.json')
+    // 1. Corrected JSON fetch path
+    fetch('images_inv/images.json')
         .then(res => res.json())
         .then(images => {
             const gallery = document.getElementById('gallery');
@@ -216,7 +217,7 @@
                 item.className = 'item';
                 item.innerHTML = `
                     <div class="image-wrapper">
-                        <img src="images/${img}" alt="${name}">
+                        <img src="images_inv/${img}" alt="${name}">
                         <div class="overlay">
                             <div class="overlay-content">
                                 <div class="overlay-title">Join Discord to download</div>
