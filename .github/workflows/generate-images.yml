@@ -25,12 +25,10 @@ jobs:
             fi
             case "$base" in
               *.jpg|*.jpeg|*.png|*.webp)
-                clean_name="${base%.*}"
-                clean_name="${clean_name//_/ }"
                 if [ "$first" = false ]; then
                   echo ',' >> images_inv/images.json
                 fi
-                printf '  { "name": "%s", "filename": "%s" }' "$clean_name" "$base" >> images_inv/images.json
+                printf '  "%s"' "$base" >> images_inv/images.json
                 first=false
                 ;;
             esac
