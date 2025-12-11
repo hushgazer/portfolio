@@ -51,6 +51,7 @@
     .panel{padding:22px; border-radius:var(--card-radius); background:transparent; display:flex; flex-direction:column; gap:18px}
     .headline{display:flex; justify-content:space-between; align-items:flex-start}
     .headline h1{margin:0; font-size:24px}
+    .name-badge{display:inline-block; background:var(--red); color:var(--white); padding:6px 10px; border-radius:8px; margin-right:8px; font-weight:800; font-size:13px}
     .headline p{margin:0; color:var(--muted-soft)}
 
     .two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}
@@ -72,6 +73,37 @@
     footer{display:flex; justify-content:space-between; align-items:center; margin-top:10px; color:var(--muted-soft); font-size:13px}
 
     @media(max-width:980px){.hero{grid-template-columns:1fr}.selectors{justify-content:center}}
+
+    /* creator bubbles: wide field that drifts */
+    .creator-bubbles{position:relative; width:160%; height:230px; margin-top:12px; left:-10%;}
+    .bubble{position:absolute; width:72px; height:72px; border-radius:50%; background-size:cover; background-position:center; box-shadow:0 12px 30px rgba(2,6,23,0.6); border:4px solid rgba(255,255,255,0.04); will-change:transform, left, top}
+
+    /* initial positions for each bubble (percent-based) */
+    .bubble:nth-child(1){left:10%; top:20%}
+    .bubble:nth-child(2){left:30%; top:5%}
+    .bubble:nth-child(3){left:55%; top:28%}
+    .bubble:nth-child(4){left:75%; top:10%}
+    .bubble:nth-child(5){left:95%; top:32%}
+    .bubble:nth-child(6){left:65%; top:65%}
+    .bubble:nth-child(7){left:35%; top:60%}
+
+    /* smooth drifting animation with varied durations and delays */
+    .bubble{animation:drift 8s ease-in-out infinite}
+    .bubble:nth-child(1){animation-duration:7s; animation-delay:0s}
+    .bubble:nth-child(2){animation-duration:9s; animation-delay:0.5s}
+    .bubble:nth-child(3){animation-duration:8.5s; animation-delay:0.2s}
+    .bubble:nth-child(4){animation-duration:10s; animation-delay:0.8s}
+    .bubble:nth-child(5){animation-duration:7.5s; animation-delay:0.3s}
+    .bubble:nth-child(6){animation-duration:9.5s; animation-delay:0.6s}
+    .bubble:nth-child(7){animation-duration:8.2s; animation-delay:0.4s}
+
+    @keyframes drift{
+      0%{transform:translate(0,0) rotate(0deg)}
+      25%{transform:translate(18px,-14px) rotate(3deg)}
+      50%{transform:translate(-12px,10px) rotate(-2deg)}
+      75%{transform:translate(10px,16px) rotate(2deg)}
+      100%{transform:translate(0,0) rotate(0deg)}
+    }
   </style>
 </head>
 <body>
@@ -109,7 +141,7 @@
 
         <div style="display:flex; gap:10px; justify-content:center;">
           <a class="btn-red" href="https://hushgazer.github.io/portfolio/index.html" target="_blank" rel="noopener">Inventory</a>
-          <a class="btn-outline" href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discord</a>
+          <a class="btn-red" href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discord</a>
         </div>
       </aside>
 
@@ -117,7 +149,17 @@
         <div class="headline">
           <div>
             <h1>Worked with top creators</h1>
-            <p>I’ve worked for <strong>Bloo</strong>, <strong>Kweblekop</strong>, <strong>King Crane</strong>, <strong>Checkpoint</strong>, <strong>Nought</strong>, <strong>Simply Chris</strong>, <strong>Caylus</strong> and many more awesome creators.</p>
+            <div style="margin-top:12px">
+              <div class="creator-bubbles">
+                <div class="bubble" style="background-image:url('assets/bloo.jpg')" title="Bloo"></div>
+                <div class="bubble" style="background-image:url('assets/kweblekop.jpg')" title="Kweblekop"></div>
+                <div class="bubble" style="background-image:url('assets/kingcrane.jpg')" title="King Crane"></div>
+                <div class="bubble" style="background-image:url('assets/checkpoint.jpg')" title="Checkpoint"></div>
+                <div class="bubble" style="background-image:url('assets/nought.jpg')" title="Nought"></div>
+                <div class="bubble" style="background-image:url('assets/simplychris.jpg')" title="Simply Chris"></div>
+                <div class="bubble" style="background-image:url('assets/caylus.jpg')" title="Caylus"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -126,31 +168,29 @@
         <div class="two-col">
           <div class="card-block">
             <h3>What I make</h3>
-            <p class="lead">Props, peds, basic scripts, gold & environment materials. Assets are pipeline-ready and optimized for real-time.</p>
+            <p class="lead">Props, peds, basic scripts, gold & env materials.</p>
             <div class="features">
-              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Props & environment materials — modular, tiled and layered</div></div>
-              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Peds & characters — LODs, blendshapes on request</div></div>
-              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Basic scripts — utility scripts and small gameplay hooks</div></div>
-              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Gold materials & environment setups — IPR-ready</div></div>
+              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Props</div></div>
+              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Peds</div></div>
+              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Basic scripts</div></div>
+              <div class="feature-row"><div class="feature-dot"></div><div class="feature-text">Gold & environment materials</div></div>
             </div>
           </div>
 
           <div class="card-block">
             <h3>Rigging specialties</h3>
             <div style="margin-top:8px; color:var(--muted-soft)">
-              <strong>Multi-legged & crawling creatures</strong>
-              <div style="margin-top:6px">Spiders, centipedes — procedural foot placement, body IK chains.</div>
-              <div style="margin-top:10px"><strong>Quadrupeds & animals</strong>
-              <div style="margin-top:6px">Dogs, cats — FK/IK blends, stretch, squash controls.</div></div>
+              <div>Multiple-legged crawling creatures (spiders, centipedes)</div>
+              <div style="margin-top:8px">Animals — dogs, cats (FK/IK blends, common controls)</div>
             </div>
           </div>
         </div>
 
         <hr class="sep">
 
-        <div class="card-block">
+        <div class="card-block" style="margin:0 auto; text-align:center; max-width:600px; display:flex; flex-direction:column; align-items:center;">
           <h3 id="mods">Mods & Inventory</h3>
-          <p style="color:var(--muted-soft); margin-top:8px">I maintain a library of <strong>more than 1000 mods</strong>. Pick from the <a href="https://hushgazer.github.io/portfolio/index.html" target="_blank" rel="noopener" style="color:var(--red); font-weight:800; text-decoration:underline">inventory</a> and join my Discord to download them.</p>
+          <p style="color:var(--muted-soft); margin-top:8px">I have a library of more than 1000 mods. Feel free to pick from the <a href="https://hushgazer.github.io/portfolio/index.html" target="_blank" rel="noopener" style="color:var(--red); font-weight:800; text-decoration:underline">inventory</a> and join my Discord to download them.</p>
 
           <div class="skills" style="margin-top:12px">
             <div class="skill">Props</div>
