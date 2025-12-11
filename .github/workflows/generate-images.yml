@@ -1,40 +1,66 @@
-run: |
-  sudo apt-get update -y
-  sudo apt-get install -y webp imagemagick
+name: Generate WebP + JSON
 
-  mkdir -p images_inv
-  mkdir -p images_webp
+on:
+  push:
+    paths:
+      - "images_inv/**"
 
-  # Convert each image to a single optimized .webp at quality 40
-  for src in images_inv/*; do
-    base=$(basename "$src")
-    if [[ "$base" == ".gitkeep" || "$base" == "images.json" ]]; then
-      continue
-    fi
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    ext="${base##*.}"
-    name_noext="${base%.*}"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    case "$ext" in
-      png|jpg|jpeg|PNG|JPG|JPEG)
-        out="images_webp/${name_noext}.webp"
-        if [ ! -f "$out" ]; then
-          magick "$src" -quality 40 "$out" || cwebp -q 40 "$src" -o "$out"
-        fi
-        ;;
-    esac
-  done
+      - name: Install tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y webp imagemagick
 
-  # Build images.json with ONLY .webp files
-  echo '[' > images_inv/images.json
-  first=true
-  for file in images_webp/*.webp; do
-    b=$(basename "$file")
-    if [ "$first" = false ]; then
-      echo ',' >> images_inv/images.json
-    fi
-    printf '  "%s"' "$b" >> images_inv/images.json
-    first=false
-  done
-  echo '' >> images_inv/images.json
-  echo ']' >> images_inv/images.json
+      - name: Convert images to WebP
+        run: |
+          mkdir -p images_inv
+          mkdir -p images_webp
+
+          for src in images_inv/*; do
+            base=$(basename "$src")
+            if [[ "$base" == ".gitkeep" || "$base" == "images.json" || "$base" == "trigger.txt" ]]; then
+              continue
+            fi
+
+            ext="${base##*.}"
+            name_noext="${base%.*}"
+
+            case "$ext" in
+              png|jpg|jpeg|PNG|JPG|JPEG)
+                out="images_webp/${name_noext}.webp"
+                magick "$src" -quality 40 "$out" || cwebp -q 40 "$src" -o "$out"
+                ;;
+            esac
+          done
+
+      - name: Generate images.json
+        run: |
+          echo '[' > images_inv/images.json
+          first=true
+          for file in images_webp/*.webp; do
+            b=$(basename "$file")
+            if [ "$first" = false ]; then
+              echo ',' >> images_inv/images.json
+            fi
+            printf '  "%s"' "$b" >> images_inv/images.json
+            first=false
+          done
+          echo '' >> images_inv/images.json
+          echo ']' >> images_inv/images.json
+
+      - name: Commit changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add images_webp/*.webp images_inv/images.json
+            git commit -m "Processed WebP images"
+            git push
+          fi
