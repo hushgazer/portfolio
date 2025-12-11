@@ -1,47 +1,40 @@
-name: Generate images.json
+run: |
+  sudo apt-get update -y
+  sudo apt-get install -y webp imagemagick
 
-on:
-  push:
-    paths:
-      - "images_inv/**"
+  mkdir -p images_inv
+  mkdir -p images_webp
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  # Convert each image to a single optimized .webp at quality 40
+  for src in images_inv/*; do
+    base=$(basename "$src")
+    if [[ "$base" == ".gitkeep" || "$base" == "images.json" ]]; then
+      continue
+    fi
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    ext="${base##*.}"
+    name_noext="${base%.*}"
 
-      - name: Generate images.json
-        run: |
-          mkdir -p images_inv
-          echo '[' > images_inv/images.json
-          first=true
-          for file in images_inv/*; do
-            base=$(basename "$file")
-            if [[ "$base" == ".gitkeep" || "$base" == "images.json" ]]; then
-              continue
-            fi
-            case "$base" in
-              *.jpg|*.jpeg|*.png|*.webp)
-                if [ "$first" = false ]; then
-                  echo ',' >> images_inv/images.json
-                fi
-                printf '  "%s"' "$base" >> images_inv/images.json
-                first=false
-                ;;
-            esac
-          done
-          echo '' >> images_inv/images.json
-          echo ']' >> images_inv/images.json
+    case "$ext" in
+      png|jpg|jpeg|PNG|JPG|JPEG)
+        out="images_webp/${name_noext}.webp"
+        if [ ! -f "$out" ]; then
+          magick "$src" -quality 40 "$out" || cwebp -q 40 "$src" -o "$out"
+        fi
+        ;;
+    esac
+  done
 
-      - name: Commit images.json
-        run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add images_inv/images.json
-            git commit -m "Update images.json"
-            git push
-          fi
+  # Build images.json with ONLY .webp files
+  echo '[' > images_inv/images.json
+  first=true
+  for file in images_webp/*.webp; do
+    b=$(basename "$file")
+    if [ "$first" = false ]; then
+      echo ',' >> images_inv/images.json
+    fi
+    printf '  "%s"' "$b" >> images_inv/images.json
+    first=false
+  done
+  echo '' >> images_inv/images.json
+  echo ']' >> images_inv/images.json
