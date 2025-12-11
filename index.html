@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>GTA5 MODS MARKET</title>
+    <title>GTA5-Hush-Mods</title>
 
     <style>
         :root{--red:#ff4b5c;--bg:#050816;--card:#171821}
@@ -48,7 +48,7 @@
 
         /* nav */
         .nav-bar {
-            background: transparent; /* capsule background handled per-link */
+            background: transparent;
             border-radius: 999px;
             padding: 10px 12px;
             margin: 12px auto 26px;
@@ -77,20 +77,11 @@
             color: #fff;
         }
 
-        .nav-link:hover {
-            transform: translateY(-2px);
-        }
+        .nav-link:hover { transform: translateY(-2px); }
 
-        .divider {
-            opacity: 0.6;
-            padding: 0 8px;
-            user-select: none;
-        }
+        .divider { opacity: 0.6; padding: 0 8px; user-select: none; }
 
-        h1 {
-            font-size: 26px;
-            margin-bottom: 14px;
-        }
+        h1 { font-size: 26px; margin-bottom: 14px; }
 
         .section-box {
             background: #0b1020;
@@ -138,7 +129,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
         .overlay {
@@ -172,8 +162,6 @@
         .overlay-btn:hover { filter: brightness(1.08); }
 
         .name { margin-top: 10px; font-size: 15px; }
-
-        .error { color: #ffb4b4; background: rgba(255,75,92,0.06); padding: 12px; border-radius: 10px; }
     </style>
 </head>
 
@@ -183,11 +171,11 @@
     <div class="header-inner">
         <div class="header-top">
             <img src="assets/logo.png" alt="logo" class="logo-img">
-            <div class="logo-text">GTA5 MODS MARKET</div>
+            <div class="logo-text">GTA5-Hush-Mods</div>
         </div>
 
         <div class="nav-bar" id="navBar">
-            <span class="nav-link current" id="navInventory" aria-current="page">INVENTORY / SHOP</span>
+            <span class="nav-link current" id="navInventory" aria-current="page">INVENTORY</span>
             <span class="divider">|</span>
             <a href="portfolio.html" class="nav-link" id="navPortfolio">PORTFOLIO</a>
         </div>
@@ -195,14 +183,13 @@
 </header>
 
 <section class="section-box">
-    <h1>Inventory / Shop</h1>
+    <h1>Inventory</h1>
     <div id="gallery" class="grid" aria-live="polite"></div>
 </section>
 
 <script>
     const DISCORD_LINK = "https://discord.gg/vTjXFNp82S";
 
-    // Keep GitHub workflow path exactly as before — don't change JSON handling for GitHub.
     fetch('images_inv/images.json')
         .then(res => res.json())
         .then(images => {
@@ -222,7 +209,7 @@
                         <div class="overlay">
                             <div class="overlay-content">
                                 <div class="overlay-title">Join Discord</div>
-                                <div class="overlay-text">Get this mod and future updates directly in my server.</div>
+                                <div class="overlay-text">Join my community for previews, updates, and commissions.</div>
                                 <button class="overlay-btn">Join Discord</button>
                             </div>
                         </div>
@@ -238,7 +225,6 @@
         })
         .catch(err => console.error("JSON load error:", err));
 
-    // Nav: visual highlight moves to hovered link and returns when mouse leaves.
     (function navHoverSwap(){
         const navBar = document.getElementById('navBar');
         const original = document.querySelector('.nav-link.current');
@@ -258,6 +244,10 @@
         });
     })();
 </script>
+
+<footer class="section-box" style="text-align:center; margin-top:10px;">
+  <small>This site is a personal portfolio showcasing GTA V mods and assets. No files are distributed directly from this page.</small>
+</footer>
 
 </body>
 </html>
