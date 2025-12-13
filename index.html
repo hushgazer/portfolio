@@ -195,7 +195,7 @@ fetch("images_inv/images.json")
         d.className = "item";
         d.innerHTML = `
             <div class="image-wrapper">
-                <img src="images_webp/${img}" onerror="this.src='images/${img}'">
+                <img src="images_webp/${img}?v=1" onerror="this.src='images/${img}?v=1'">
                 <div class="overlay">
                     <div>
                         <div class="overlay-title">Join Discord</div>
